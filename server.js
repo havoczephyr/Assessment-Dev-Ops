@@ -12,6 +12,7 @@ var rollbar = new Rollbar({
 
 // record a generic message and send it to Rollbar
 rollbar.log("Hello world!");
+rollbar.log('This is working yeah? cool')
 
 app.use(express.json())
 
@@ -26,6 +27,7 @@ app.use('/js', express.static(path.join (__dirname, './public/index.js')))
 app.get('/api/robots', (req, res) => {
     try {
         res.status(200).send(botsArr)
+        rollbar.info('player got the bots!')
     } catch (error) {
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
@@ -86,10 +88,12 @@ app.get('/api/player', (req, res) => {
     } catch (error) {
         console.log('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
+        rollbar.info('player could not have stats displayed')
     }
 })
 
 app.use(rollbar.errorHandler())
+rollbar.log('errorHandler has been loaded')
 
 const port = process.env.PORT || 3000
 
